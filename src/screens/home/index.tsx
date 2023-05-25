@@ -12,23 +12,10 @@ export default function HomePage(){
     const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
     const [renderedComponent, setRenderedComponent] = useState(<PokemonList pokemonToSearch='default' pokemonList={pokemonList} setPokemonList={setPokemonList}/>)
   
-    // useEffect(() => { // Detects when the pokemonList has changed to force a rerender of the Child component.
-      // setRenderedComponent(<PokemonList pokemonToSearch='default' pokemonList={pokemonList} setPokemonList={setPokemonList} handlePokemonChoice={handlePokemonChoice}/>)
-    // }, [pokemonList])
-  
     useEffect(() => {
       console.log('CURRENT POKEMONLIST VALUE: ', pokemonList)
     }, [pokemonList])
   
-    // const handlePokemonChoice = async (pokemonId: number) => {
-    //   setRenderedComponent(<InfoCard pokemonId={pokemonId} handleReturnToInitialScreen={handleReturnToInitialScreen} handlePokemonChoice={handlePokemonChoice}/>)
-    // }
-  
-    const handleReturnToInitialScreen = () => {
-    //   setRenderedComponent(<PokemonList pokemonToSearch='default' pokemonList={pokemonList} setPokemonList={setPokemonList} handlePokemonChoice={handlePokemonChoice}/>)
-    }
-
-
     return(
         <SafeAreaView style={styles.container}>
         <ScrollView style={styles.innerContainer}>
@@ -41,11 +28,6 @@ export default function HomePage(){
             <Input variant="rounded" width={'90%'} placeholder="Round" InputLeftElement={<Icon as={<AntDesign name="search1" />} size={5} ml="2" color="muted.400" />} backgroundColor={'#fff'}/>
             </View>
           </View>
-  
-  
-          {/* <View style={styles.mainPokemonsContainer}>
-            {renderedComponent}
-          </View>      */}
           <View style={styles.centralizeList}>
           <PokemonList pokemonToSearch='default' pokemonList={pokemonList} setPokemonList={setPokemonList} />
           </View>

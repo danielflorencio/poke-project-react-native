@@ -12,10 +12,6 @@ type PokemonStatsProps = {
 }
 
 export default function Stats({hp, att, def, satk, sdef, spd}: PokemonStatsProps){
-
-    console.log('HP: ', hp)
-
-
     return(
         <View style={styles.mainStatsContainer}>
             <Text style={styles.baseStatsTitle}>Base Stats</Text>

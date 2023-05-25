@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native"
 import { Pokemon } from "../types/pokemon";
 import Characteristics from "./Characteristics";
 import Stats from "./Stats";
+import { StackTypes } from "../routes/MyStack";
+import { useNavigation } from "@react-navigation/native";
 
 // type InfoCardProps = {
 //     pokemonId: number, 
@@ -17,18 +19,21 @@ export default function InfoCardSimplified({route}: {route: any}){
     console.log('ROUTE: ', route)
 
     const { pokemonId } = route.params
+    const [ pokemonIdState, setPokemonIdState ] = useState(pokemonId)
 
     const [myPokemon, setMyPokemon] = useState<Pokemon>();
+
+    const navigation = useNavigation<StackTypes>();
  
     useEffect(() => {
         (async () => {
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`, {method: 'GET'})
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonIdState}/`, {method: 'GET'})
             const data = await response.json();
 
-            const colorResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`, {method: 'GET'})
+            const colorResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonIdState}/`, {method: 'GET'})
             const colorData = await colorResponse.json();
 
-            const descriptionResponse = await fetch(`https://pokeapi.co/api/v2/characteristic/${pokemonId}/`, {method: 'GET'})
+            const descriptionResponse = await fetch(`https://pokeapi.co/api/v2/characteristic/${pokemonIdState}/`, {method: 'GET'})
             const descriptionData = await descriptionResponse.json();
 
             // The code below looks through all the descriptions from the API, and then return only the one that's in english.
@@ -37,7 +42,7 @@ export default function InfoCardSimplified({route}: {route: any}){
             console.log('Pokemon being received on InfoCard data fetching: ', data)
             setMyPokemon({
                 name: data.name, 
-                id: pokemonId, 
+                id: pokemonIdState, 
                 height: data.height.toString(), 
                 weight: data.weight.toString(),
                 hp: data.stats[0].base_stat,
@@ -51,8 +56,22 @@ export default function InfoCardSimplified({route}: {route: any}){
                 description: newDescriptionData.description
             })
         })();
-    }, [pokemonId])
+    }, [pokemonIdState])
     
+    // const handleNavigateInfoCard = (action: 'previous' | 'next') => {
+    //     if(action === 'previous'){
+    //         navigation.navigate('InfoCard', )
+    //     }
+    // }
+
+    const handleInfoCardChange = (action: 'previous' | 'next') => {
+        if(action === 'previous'){
+            setPokemonIdState(Number(pokemonIdState) - 1)
+        } else{
+            setPokemonIdState(Number(pokemonIdState) + 1)
+        }
+    }
+
     return(
         // <ScrollView contentContainerStyle={{display: 'flex', minHeight: screenHeight, flexDirection: 'column', justifyContent: 'space-between'}} style={[styles.scrollViewContainer, {backgroundColor: `${myPokemon?.colorTheme === null || undefined ? ('#38a169') : (myPokemon?.colorTheme)}`}]}>
         <View style={[{backgroundColor: `${myPokemon?.colorTheme === null || undefined ? ('#38a169') : (myPokemon?.colorTheme)}`}, styles.scrollViewContainer]}>
@@ -63,8 +82,8 @@ export default function InfoCardSimplified({route}: {route: any}){
                 </View>
             </View>            
             <View style={styles.whiteBox}>
-                <Characteristics weight={myPokemon?.weight} height={myPokemon?.height} moves={myPokemon?.moves} pokemonId={pokemonId}/>
-                <Text></Text>
+                <Characteristics weight={myPokemon?.weight} height={myPokemon?.height} moves={myPokemon?.moves} pokemonId={pokemonIdState} handleInfoCardChange={handleInfoCardChange}/>
+                {/* <Text>{myPokemon?.description}</Text> */}
                 <Stats hp={myPokemon?.hp} att={myPokemon?.att} def={myPokemon?.def} satk={myPokemon?.satk} sdef={myPokemon?.sdef} spd={myPokemon?.spd}/>
             </View>
         </View>

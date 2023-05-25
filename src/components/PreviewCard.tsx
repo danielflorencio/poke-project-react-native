@@ -18,9 +18,7 @@ export default function PreviewCard({pokemon, handlePokemonChoice, id}: PreviewC
             <Text style={styles.pokemonIdStyles}>
             #{pokemon.id}
             </Text>
-            {/* <View style={styles.pokemonImg}> */}
             <Image source={{uri: `${pokemon.pokemonImgUrl}`}} style={styles.pokemonImg}/>
-            {/* </View> */}
             <View style={styles.lowerBlackBox}>
                 <Text style={styles.pokemonName}>{pokemon.name}</Text>
             </View>
@@ -43,7 +41,6 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         paddingTop: 2,
         paddingRight: 2
-        // color: 
     },
     pokemonImg: {
         position: 'absolute',
