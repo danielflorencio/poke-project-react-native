@@ -4,26 +4,19 @@ import { View, StyleSheet } from "react-native";
 import PreviewCard from "./PreviewCard";
 
 type PokemonListProps = {
-    pokemonToSearch: string, 
     setPokemonList: React.Dispatch<React.SetStateAction<Pokemon[]>>,
     pokemonList: Pokemon[],
     handlePokemonChoice?: (pokemonId: number) => void
 }
 
-export default function PokemonList({pokemonToSearch, setPokemonList, pokemonList, handlePokemonChoice}: PokemonListProps){
+export default function PokemonList({setPokemonList, pokemonList, handlePokemonChoice}: PokemonListProps){
 
     useEffect(() => {
         if(pokemonList.length === 0){
             (async () => {
-                let searchParameters: string = '' 
-                if(pokemonToSearch !== 'default'){
-                  searchParameters = pokemonToSearch
-                }
   
                 const response = await fetch(`https://pokeapi.co/api/v2/pokemon/`, {method: 'GET'})
                 const data = await response.json();
-          
-                console.log('DATA BEING RECEIVED ON POKEMONLIST: ', data)
 
                 const newPokemonsState: Pokemon[] = await Promise.all(data.results.map(async (pokemon: any) => {
                   const pokemonResponse = await fetch(pokemon.url);
@@ -52,7 +45,6 @@ export default function PokemonList({pokemonToSearch, setPokemonList, pokemonLis
 
 const styles = StyleSheet.create({
     pokemonListContainer: {
-        // margin: 'auto',
         backgroundColor: '#fff',
         width: '95%',
         borderRadius: 12, 

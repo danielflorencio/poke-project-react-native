@@ -11,17 +11,31 @@ export default function HomePage(){
   const [isSearchByName, setIsSearchByName] = useState<'id' | 'name'>('name')
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
 
-
   const searchPokemon = async (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {   
     e.preventDefault();
       (async () => {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchInputField.toLowerCase()}`, {method: 'GET'})
-        const data = await response.json();
-        
-        setPokemonList([{name: data.name, id: data.id, pokemonImgUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id.toString()}.png`}])
+        if(searchInputField !== ''){
+          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchInputField.toLowerCase()}`, {method: 'GET'})
+          const data = await response.json();
+          setPokemonList([{name: data.name, id: data.id, pokemonImgUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id.toString()}.png`}])
+        } else {
+          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/`, {method: 'GET'})
+          const data = await response.json();
+
+          const newPokemonsState: Pokemon[] = await Promise.all(data.results.map(async (pokemon: any) => {
+            const pokemonResponse = await fetch(pokemon.url);
+            const pokemonData = await pokemonResponse.json();
+      
+            return {
+              name: pokemon.name,
+              id: pokemonData.id.toString(),
+              pokemonImgUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonData.id.toString()}.png`
+            };
+          }));
+          setPokemonList([...newPokemonsState])
+        }
       })();      
   }
-
 
   return(
     <SafeAreaView style={styles.container}>
@@ -36,7 +50,7 @@ export default function HomePage(){
           </View>
         </View>
         <View style={styles.centralizeList}>
-        <PokemonList pokemonToSearch='default' pokemonList={pokemonList} setPokemonList={setPokemonList} />
+        <PokemonList pokemonList={pokemonList} setPokemonList={setPokemonList} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -91,15 +105,4 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center'
     },
-    // mainPokemonsContainer: {
-    //   backgroundColor: '#fff',
-    //   width: '95%',
-    //   display: 'flex',
-    //   justifyContent: 'center',
-    //   alignItems: 'center',
-    //   flexDirection: 'column',
-    //   minHeight: 100, 
-    //   borderRadius: 6,
-    //   margin: 'auto'
-    // }
   });

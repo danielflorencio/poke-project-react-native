@@ -1,30 +1,19 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native"
+import { View, StyleSheet, Text, /* Dimensions */ } from "react-native"
 import { Pokemon } from "../types/pokemon";
 import Characteristics from "./Characteristics";
 import Stats from "./Stats";
-import { StackTypes } from "../routes/MyStack";
-import { useNavigation } from "@react-navigation/native";
 
-// type InfoCardProps = {
-//     pokemonId: number, 
-//     handleReturnToInitialScreen: () => void,
-//     handlePokemonChoice: (pokemonId: number) => void
-// }
-
-const screenHeight = Dimensions.get('window').height;
+// const screenHeight = Dimensions.get('window').height;
 
 export default function InfoCardSimplified({route}: {route: any}){
-
-    console.log('ROUTE: ', route)
 
     const { pokemonId } = route.params
     const [ pokemonIdState, setPokemonIdState ] = useState(pokemonId)
 
     const [myPokemon, setMyPokemon] = useState<Pokemon>();
 
-    const navigation = useNavigation<StackTypes>();
- 
+
     useEffect(() => {
         (async () => {
             const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonIdState}/`, {method: 'GET'})
@@ -58,12 +47,6 @@ export default function InfoCardSimplified({route}: {route: any}){
         })();
     }, [pokemonIdState])
     
-    // const handleNavigateInfoCard = (action: 'previous' | 'next') => {
-    //     if(action === 'previous'){
-    //         navigation.navigate('InfoCard', )
-    //     }
-    // }
-
     const handleInfoCardChange = (action: 'previous' | 'next') => {
         if(action === 'previous'){
             setPokemonIdState(Number(pokemonIdState) - 1)
@@ -73,7 +56,6 @@ export default function InfoCardSimplified({route}: {route: any}){
     }
 
     return(
-        // <ScrollView contentContainerStyle={{display: 'flex', minHeight: screenHeight, flexDirection: 'column', justifyContent: 'space-between'}} style={[styles.scrollViewContainer, {backgroundColor: `${myPokemon?.colorTheme === null || undefined ? ('#38a169') : (myPokemon?.colorTheme)}`}]}>
         <View style={[{backgroundColor: `${myPokemon?.colorTheme === null || undefined ? ('#38a169') : (myPokemon?.colorTheme)}`}, styles.scrollViewContainer]}>
             <View style={styles.mainContainer}>
                 <View style={styles.headerContainer}>
@@ -83,12 +65,10 @@ export default function InfoCardSimplified({route}: {route: any}){
             </View>            
             <View style={styles.whiteBox}>
                 <Characteristics weight={myPokemon?.weight} height={myPokemon?.height} moves={myPokemon?.moves} pokemonId={pokemonIdState} handleInfoCardChange={handleInfoCardChange}/>
-                {/* <Text>{myPokemon?.description}</Text> */}
+                <Text style={styles.description}>{myPokemon?.description}.</Text>
                 <Stats hp={myPokemon?.hp} att={myPokemon?.att} def={myPokemon?.def} satk={myPokemon?.satk} sdef={myPokemon?.sdef} spd={myPokemon?.spd}/>
             </View>
         </View>
-        // </ScrollView>
-
     )
 }
 
@@ -121,5 +101,11 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 12, 
         backgroundColor: '#fff'
+    },
+    description: {
+        width: '100%',
+        textAlign: 'center',
+        marginVertical: 20,
+        marginTop: 32
     }
 })
