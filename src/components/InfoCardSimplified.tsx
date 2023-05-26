@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Text, /* Dimensions */ } from "react-native"
+import { View, StyleSheet, Text } from "react-native"
 import { Pokemon } from "../types/pokemon";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Characteristics from "./Characteristics";
 import Stats from "./Stats";
-
-// const screenHeight = Dimensions.get('window').height;
 
 export default function InfoCardSimplified({route}: {route: any}){
 
@@ -28,7 +27,6 @@ export default function InfoCardSimplified({route}: {route: any}){
             // The code below looks through all the descriptions from the API, and then return only the one that's in english.
             const newDescriptionData = descriptionData.descriptions.find((description: any) => description.language.name === 'en');
 
-            console.log('Pokemon being received on InfoCard data fetching: ', data)
             setMyPokemon({
                 name: data.name, 
                 id: pokemonIdState, 
@@ -42,7 +40,13 @@ export default function InfoCardSimplified({route}: {route: any}){
                 spd: data.stats[5].base_stat,
                 moves: [data.moves[0].move.name, data.moves[1].move.name],
                 colorTheme: colorData.color.name,
-                description: newDescriptionData.description
+                description: newDescriptionData.description,
+                types: data.types.map((type: any) => {
+                    return {
+                        name: type.type.name,
+                        typeUrl: type.type.url
+                    }
+                }),
             })
         })();
     }, [pokemonIdState])
@@ -57,6 +61,7 @@ export default function InfoCardSimplified({route}: {route: any}){
 
     return(
         <View style={[{backgroundColor: `${myPokemon?.colorTheme === null || undefined ? ('#38a169') : (myPokemon?.colorTheme)}`}, styles.scrollViewContainer]}>
+            <MaterialCommunityIcons name="pokeball" style={styles.backgroundPokeball} size={250} color="#fff"/>
             <View style={styles.mainContainer}>
                 <View style={styles.headerContainer}>
                     <Text style={styles.pokemonName}>{myPokemon?.name && myPokemon.name[0].toUpperCase() + myPokemon.name.slice(1, myPokemon.name.length)}</Text>
@@ -64,7 +69,7 @@ export default function InfoCardSimplified({route}: {route: any}){
                 </View>
             </View>            
             <View style={styles.whiteBox}>
-                <Characteristics weight={myPokemon?.weight} height={myPokemon?.height} moves={myPokemon?.moves} pokemonId={pokemonIdState} handleInfoCardChange={handleInfoCardChange}/>
+                <Characteristics types={myPokemon?.types} weight={myPokemon?.weight} height={myPokemon?.height} moves={myPokemon?.moves} pokemonId={pokemonIdState} handleInfoCardChange={handleInfoCardChange}/>
                 <Text style={styles.description}>{myPokemon?.description}.</Text>
                 <Stats hp={myPokemon?.hp} att={myPokemon?.att} def={myPokemon?.def} satk={myPokemon?.satk} sdef={myPokemon?.sdef} spd={myPokemon?.spd}/>
             </View>
@@ -77,6 +82,12 @@ const styles = StyleSheet.create({
         minHeight: '100%',
         paddingHorizontal: 12,
         paddingBottom: 16,
+        paddingTop: 6
+    },
+    backgroundPokeball: {
+        position: 'absolute',
+        right: 15,
+        opacity: 0.5
     },
     mainContainer: {
         flex: 1
@@ -84,12 +95,14 @@ const styles = StyleSheet.create({
     pokemonName: {
         fontSize: 22,
         color: '#fff',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingLeft: 4
     },
     pokemonId: {
         fontSize: 20,
         color: '#fff',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingRight: 4
     },
     headerContainer: {
         display: 'flex',
@@ -100,12 +113,13 @@ const styles = StyleSheet.create({
         minHeight: 200,
         width: '100%',
         borderRadius: 12, 
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        paddingBottom: 22
     },
     description: {
         width: '100%',
         textAlign: 'center',
-        marginVertical: 20,
-        marginTop: 32
+        marginVertical: 24,
+        marginTop: 36
     }
 })

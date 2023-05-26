@@ -27,27 +27,27 @@ export default function Stats({hp, att, def, satk, sdef, spd}: PokemonStatsProps
                 <Divider orientation={'vertical'}/>
                 <View style={styles.progressBarsContainer}>
                     <View style={styles.textAndBarCouple}>
-                        <Text style={styles.statusText}>{hp}</Text>
+                        <Text style={styles.statusText}>{String(hp).padStart(3, '0')}</Text>
                         <Progress size="xs" mb={4} value={hp} style={styles.progressBar}/>
                     </View>
                     <View style={styles.textAndBarCouple}>
-                        <Text style={styles.statusText}>{att && att}</Text>
+                        <Text style={styles.statusText}>{String(att).padStart(3, '0')}</Text>
                         <Progress size="xs" mb={4} value={att} style={styles.progressBar}/>
                     </View>
                     <View style={styles.textAndBarCouple}>
-                        <Text style={styles.statusText}>{def}</Text>
+                        <Text style={styles.statusText}>{String(def).padStart(3, '0')}</Text>
                         <Progress size="xs" mb={4} value={def} style={styles.progressBar}/>
                     </View>
                     <View style={styles.textAndBarCouple}>
-                        <Text style={styles.statusText}>{satk}</Text>
+                        <Text style={styles.statusText}>{String(satk).padStart(3, '0')}</Text>
                         <Progress size="xs" mb={4} value={satk} style={styles.progressBar}/>
                     </View>
                     <View style={styles.textAndBarCouple}>
-                        <Text style={styles.statusText}>{sdef}</Text>
+                        <Text style={styles.statusText}>{String(sdef).padStart(3, '0')}</Text>
                         <Progress size="xs" mb={4} value={sdef} style={styles.progressBar}/>
                     </View>
                     <View style={styles.textAndBarCouple}>
-                        <Text style={styles.statusText}>{spd}</Text>
+                        <Text style={styles.statusText}>{String(spd).padStart(3, '0')}</Text>
                         <Progress size="xs" mb={4} value={spd} style={styles.progressBar}/>
                     </View>
                 </View>

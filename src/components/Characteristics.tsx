@@ -2,20 +2,27 @@ import { Divider } from "native-base";
 import { View, StyleSheet, Text, Image } from "react-native";
 import {FontAwesome5} from '@expo/vector-icons'
 import {MaterialIcons} from '@expo/vector-icons'
+import { PokeType } from "../types/pokeType";
 
 type PokemonCharacteristicsProps = {
     weight?: number,
     height?: number, 
     moves?: string[],
     pokemonId?: number,
-    handleInfoCardChange: (action: 'previous' | 'next') => void
+    handleInfoCardChange: (action: 'previous' | 'next') => void,
+    types?: PokeType[]
 }
 
-export default function Stats({weight, height, moves, pokemonId, handleInfoCardChange}: PokemonCharacteristicsProps){
+export default function Stats({weight, height, moves, pokemonId, handleInfoCardChange, types}: PokemonCharacteristicsProps){
 
     return(
         <View style={styles.mainContainer}>
             <View style={styles.imgAndAboutContainer}>
+                <View style={styles.pokemonTypes}>
+                    {types && types.map((type, index) => (
+                        <Text key={index} style={styles.pokemonType}>{type.name}</Text>
+                    ))}
+                </View>
                 <Text style={styles.aboutText}>About</Text>
                 {pokemonId && <Image source={{uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId.toString()}.png`}} style={styles.pokemonImg}/>}
                 <View style={styles.arrowsContainer}>
@@ -69,16 +76,27 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative'
+        position: 'relative',
+        marginTop: 22
+    },
+    pokemonTypes: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '30%'
+    },
+    pokemonType: {
+        // backgroundColor: ''
     },
     pokemonImg: {
         position: 'absolute',
         width: 80,
         height: 80,
-        bottom: 20,
+        bottom: 72,
     },
     aboutText: {
         marginVertical: 12,
+        marginTop: 22,
         fontSize: 18,
         fontWeight: 'bold'
     },
@@ -88,7 +106,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         gap: 22,
-        // position: 'relative'
     },
     characteristicContainer: {
         position: 'relative',
@@ -115,7 +132,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 46,
         minWidth: 52,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 14,
+        color: '#718096'
     },
     arrowsContainer: {
         width: '100%',
@@ -123,7 +142,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        bottom: 80,
+        bottom: 102,
         paddingHorizontal: 14
     },
     divider: {

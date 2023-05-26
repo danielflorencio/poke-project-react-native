@@ -4,21 +4,21 @@ import { StackTypes } from "../routes/MyStack";
 import { useNavigation } from "@react-navigation/native";
 
 type PreviewCardProps = {
-    pokemon: Pokemon, 
-    handlePokemonChoice?: (pokemonId: number) => void,
-    id: number
+    pokemon: Pokemon
 }
 
-export default function PreviewCard({pokemon, handlePokemonChoice, id}: PreviewCardProps){
+export default function PreviewCard({pokemon}: PreviewCardProps){
 
     const navigation = useNavigation<StackTypes>();
 
     return(
         <View style={styles.previewCardContainer} onTouchEnd={() => navigation.navigate("InfoCard", {pokemonId: pokemon.id})}>
             <Text style={styles.pokemonIdStyles}>
-            #{pokemon.id}
+            #{pokemon.id && String(pokemon.id).padStart(3, '0')}
             </Text>
-            <Image source={{uri: `${pokemon.pokemonImgUrl}`}} style={styles.pokemonImg}/>
+            <View style={styles.imgContainer}>
+                <Image source={{uri: `${pokemon.pokemonImgUrl}`}} style={styles.pokemonImg}/>
+            </View>
             <View style={styles.lowerBlackBox}>
                 <Text style={styles.pokemonName}>{pokemon.name}</Text>
             </View>
@@ -40,10 +40,19 @@ const styles = StyleSheet.create({
     pokemonIdStyles: {
         textAlign: 'right',
         paddingTop: 2,
-        paddingRight: 2
+        paddingRight: 2,
+        color: '#4a5568'
+    },
+    imgContainer: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     pokemonImg: {
-        position: 'absolute',
         width: 80,
         height: 80
     },

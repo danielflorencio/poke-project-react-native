@@ -5,11 +5,10 @@ import PreviewCard from "./PreviewCard";
 
 type PokemonListProps = {
     setPokemonList: React.Dispatch<React.SetStateAction<Pokemon[]>>,
-    pokemonList: Pokemon[],
-    handlePokemonChoice?: (pokemonId: number) => void
+    pokemonList: Pokemon[]
 }
 
-export default function PokemonList({setPokemonList, pokemonList, handlePokemonChoice}: PokemonListProps){
+export default function PokemonList({setPokemonList, pokemonList}: PokemonListProps){
 
     useEffect(() => {
         if(pokemonList.length === 0){
@@ -37,7 +36,7 @@ export default function PokemonList({setPokemonList, pokemonList, handlePokemonC
     return(
         <View style={styles.pokemonListContainer}>
                 {pokemonList && pokemonList.map((pokemon, index) => 
-                    <PreviewCard key={index} pokemon={pokemon} handlePokemonChoice={handlePokemonChoice} id={pokemon.id}/>
+                    <PreviewCard key={index} pokemon={pokemon}/>
                 )}
         </View>
     )
@@ -48,10 +47,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         width: '95%',
         borderRadius: 12, 
-        borderWidth: 2,
-        borderColor: 'purple',
+        padding: 2,
+        paddingVertical: 8,
+        marginTop: 8,
+        marginBottom: 8,
         display: 'flex', 
-        gap: 4, 
+        gap: 2, 
         flexWrap: 'wrap',
         alignItems: 'center',
         flexDirection: 'row',
