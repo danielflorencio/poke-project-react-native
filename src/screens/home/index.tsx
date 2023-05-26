@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, View, Text, StyleSheet } from "react-native";
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, NativeSyntheticEvent, TextInputSubmitEditingEventData } from "react-native";
 import {AntDesign} from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Icon, Input } from 'native-base';
@@ -7,33 +7,40 @@ import { Pokemon } from "../../types/pokemon";
 import { useEffect, useState } from "react";
 export default function HomePage(){
 
-    const [searchInputField, setSearchInputField] = useState<string>('')
-    const [isSearchByName, setIsSearchByName] = useState<'id' | 'name'>('name')
-    const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-    const [renderedComponent, setRenderedComponent] = useState(<PokemonList pokemonToSearch='default' pokemonList={pokemonList} setPokemonList={setPokemonList}/>)
-  
-    useEffect(() => {
-      console.log('CURRENT POKEMONLIST VALUE: ', pokemonList)
-    }, [pokemonList])
-  
-    return(
-        <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.innerContainer}>
-          <View style={styles.headerContainer}>
-            <View style={styles.pokedexAndPokeBallContainer}>
-              <MaterialCommunityIcons name="pokeball" size={46} color="#fff"/>
-              <Text style={styles.headerTitle}>Pokédex</Text>
-            </View>
-            <View style={styles.searchOptionsContainer}>
-            <Input variant="rounded" width={'90%'} placeholder="Round" InputLeftElement={<Icon as={<AntDesign name="search1" />} size={5} ml="2" color="muted.400" />} backgroundColor={'#fff'}/>
-            </View>
+  const [searchInputField, setSearchInputField] = useState<string>('')
+  const [isSearchByName, setIsSearchByName] = useState<'id' | 'name'>('name')
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+
+
+  const searchPokemon = async (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {   
+    e.preventDefault();
+      (async () => {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchInputField.toLowerCase()}`, {method: 'GET'})
+        const data = await response.json();
+        
+        setPokemonList([{name: data.name, id: data.id, pokemonImgUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id.toString()}.png`}])
+      })();      
+  }
+
+
+  return(
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.innerContainer}>
+        <View style={styles.headerContainer}>
+          <View style={styles.pokedexAndPokeBallContainer}>
+            <MaterialCommunityIcons name="pokeball" size={46} color="#fff"/>
+            <Text style={styles.headerTitle}>Pokédex</Text>
           </View>
-          <View style={styles.centralizeList}>
-          <PokemonList pokemonToSearch='default' pokemonList={pokemonList} setPokemonList={setPokemonList} />
+          <View style={styles.searchOptionsContainer}>
+          <Input value={searchInputField} onSubmitEditing={(e) => searchPokemon(e)} onChangeText={newText => setSearchInputField(newText)}variant="rounded" width={'90%'} placeholder="Round" InputLeftElement={<Icon as={<AntDesign name="search1" />} size={5} ml="2" color="muted.400" />} backgroundColor={'#fff'}/>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    )
+        </View>
+        <View style={styles.centralizeList}>
+        <PokemonList pokemonToSearch='default' pokemonList={pokemonList} setPokemonList={setPokemonList} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
