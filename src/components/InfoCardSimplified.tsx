@@ -27,6 +27,8 @@ export default function InfoCardSimplified({route}: {route: any}){
             // The code below looks through all the descriptions from the API, and then return only the one that's in english.
             const newDescriptionData = descriptionData.descriptions.find((description: any) => description.language.name === 'en');
 
+            
+
             setMyPokemon({
                 name: data.name, 
                 id: pokemonIdState, 
@@ -43,8 +45,7 @@ export default function InfoCardSimplified({route}: {route: any}){
                 description: newDescriptionData.description,
                 types: data.types.map((type: any) => {
                     return {
-                        name: type.type.name,
-                        typeUrl: type.type.url
+                        name: type.type.name
                     }
                 }),
             })

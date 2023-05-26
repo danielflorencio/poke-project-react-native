@@ -20,7 +20,9 @@ export default function Stats({weight, height, moves, pokemonId, handleInfoCardC
             <View style={styles.imgAndAboutContainer}>
                 <View style={styles.pokemonTypes}>
                     {types && types.map((type, index) => (
-                        <Text key={index} style={styles.pokemonType}>{type.name}</Text>
+                        <View style={styles.pokemonTypeView} key={index}>
+                            <Text style={styles.pokemonTypeText}>{type.name}</Text>
+                        </View>
                     ))}
                 </View>
                 <Text style={styles.aboutText}>About</Text>
@@ -82,17 +84,29 @@ const styles = StyleSheet.create({
     pokemonTypes: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '30%'
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 22,
+        flexWrap: 'wrap',
     },
-    pokemonType: {
-        // backgroundColor: ''
+    pokemonTypeView: {
+        backgroundColor: '#50bfc3',
+        paddingVertical: 3,
+        paddingHorizontal: 9,
+        borderRadius: 12,
+        display: "flex",
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    pokemonTypeText: {
+        color: '#fff',
+        fontWeight: 'bold'
     },
     pokemonImg: {
         position: 'absolute',
         width: 80,
         height: 80,
-        bottom: 72,
+        bottom: 90,
     },
     aboutText: {
         marginVertical: 12,
@@ -142,7 +156,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        bottom: 102,
+        bottom: 142,
         paddingHorizontal: 14
     },
     divider: {
