@@ -23,9 +23,34 @@ export default function HomePage(){
     e.preventDefault();
       (async () => {
         if(searchInputField !== ''){
-          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchInputField.toLowerCase()}`, {method: 'GET'})
-          const data = await response.json();
-          setPokemonList([{name: data.name, id: data.id, pokemonImgUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id.toString()}.png`}])
+          let searchParameters = searchInputField;
+          if(isSearchByName === 'id'){
+            let newSearchParameters;
+            try{
+              newSearchParameters = Number(searchParameters)
+              searchParameters = String(newSearchParameters)
+            }catch(error){
+              console.log('ERROR: ', error)
+            }
+          }
+          // console.log('converted number: ', newSearchParameters)
+          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchParameters.toLowerCase()}`, {method: 'GET'})
+          if(response.ok){
+            const data = await response.json();
+            setPokemonList([{name: data.name, id: data.id, pokemonImgUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id.toString()}.png`}])
+          } else {
+            setPokemonList([])
+          }
+
+          // if(response.ok){
+
+          // } else{
+
+          // }
+          // if(!data.ok){
+            // setPokemonList([])
+          // }
+
         } else {
           const response = await fetch(`https://pokeapi.co/api/v2/pokemon/`, {method: 'GET'})
           const data = await response.json();

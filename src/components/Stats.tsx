@@ -8,7 +8,7 @@ type PokemonStatsProps = {
     def?: number, 
     satk?: number,
     sdef?: number, 
-    spd?: number
+    spd?: number,
 }
 
 export default function Stats({hp, att, def, satk, sdef, spd}: PokemonStatsProps){
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         gap: 6
     },
     statusText: {
-
+        
     },
     progressBar: {
         width: '80%'

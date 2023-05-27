@@ -12,7 +12,6 @@ export default function InfoCardSimplified({route}: {route: any}){
 
     const [myPokemon, setMyPokemon] = useState<Pokemon>();
 
-
     useEffect(() => {
         (async () => {
             const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonIdState}/`, {method: 'GET'})
@@ -26,8 +25,6 @@ export default function InfoCardSimplified({route}: {route: any}){
 
             // The code below looks through all the descriptions from the API, and then return only the one that's in english.
             const newDescriptionData = descriptionData.descriptions.find((description: any) => description.language.name === 'en');
-
-            
 
             setMyPokemon({
                 name: data.name, 

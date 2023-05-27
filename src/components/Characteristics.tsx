@@ -10,7 +10,7 @@ type PokemonCharacteristicsProps = {
     moves?: string[],
     pokemonId?: number,
     handleInfoCardChange: (action: 'previous' | 'next') => void,
-    types?: PokeType[]
+    types?: PokeType[],
 }
 
 export default function Stats({weight, height, moves, pokemonId, handleInfoCardChange, types}: PokemonCharacteristicsProps){
@@ -59,10 +59,7 @@ export default function Stats({weight, height, moves, pokemonId, handleInfoCardC
                 {moves && moves.map((move, index) => (<Text key={index} style={styles.move}>{move}</Text>))}
                     <Text style={styles.lowerCharacteristicText}>Moves</Text>
                 </View>
-
-
             </View>
-
         </View>
     )
 }
