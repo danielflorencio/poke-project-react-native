@@ -28,8 +28,8 @@ export default function Stats({weight, height, moves, pokemonId, handleInfoCardC
                 <Text style={styles.aboutText}>About</Text>
                 {pokemonId && <Image source={{uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId.toString()}.png`}} style={styles.pokemonImg}/>}
                 <View style={styles.arrowsContainer}>
-                    {pokemonId && pokemonId > 1 ? (<MaterialIcons name="arrow-back-ios" size={32} color={'#fff'} onPress={() => handleInfoCardChange('previous')} />) : (<Text></Text>)}
-                    {pokemonId && <MaterialIcons name="arrow-forward-ios" size={32} color={'#fff'} onPress={() => handleInfoCardChange('next')}/>}                    
+                    {pokemonId && pokemonId > 1 ? (<MaterialIcons id="left-arrow" name="arrow-back-ios" size={32} color={'#fff'} onPress={() => handleInfoCardChange('previous')} />) : (<Text></Text>)}
+                    {pokemonId && <MaterialIcons id="right-arrow" name="arrow-forward-ios" size={32} color={'#fff'} onPress={() => handleInfoCardChange('next')}/>}                    
                 </View> 
 
             </View>

@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Icon, Input } from 'native-base';
 import PokemonList from "../../components/PokemonList";
 import { Pokemon } from "../../types/pokemon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 export default function HomePage(){
 
   const [searchInputField, setSearchInputField] = useState<string>('')
@@ -33,7 +33,6 @@ export default function HomePage(){
               console.log('ERROR: ', error)
             }
           }
-          // console.log('converted number: ', newSearchParameters)
           const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchParameters.toLowerCase()}`, {method: 'GET'})
           if(response.ok){
             const data = await response.json();
@@ -41,16 +40,6 @@ export default function HomePage(){
           } else {
             setPokemonList([])
           }
-
-          // if(response.ok){
-
-          // } else{
-
-          // }
-          // if(!data.ok){
-            // setPokemonList([])
-          // }
-
         } else {
           const response = await fetch(`https://pokeapi.co/api/v2/pokemon/`, {method: 'GET'})
           const data = await response.json();

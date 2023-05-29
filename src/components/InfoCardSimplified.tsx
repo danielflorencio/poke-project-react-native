@@ -58,7 +58,7 @@ export default function InfoCardSimplified({route}: {route: any}){
     }
 
     return(
-        <View style={[{backgroundColor: `${myPokemon?.colorTheme === null || undefined ? ('#38a169') : (myPokemon?.colorTheme)}`}, styles.scrollViewContainer]}>
+        <View style={[{backgroundColor: `${myPokemon?.colorTheme === null || undefined ? ('#38a169') : (myPokemon?.colorTheme)}`}, styles.scrollViewContainer]} id="infocard">
             <MaterialCommunityIcons name="pokeball" style={styles.backgroundPokeball} size={250} color="#fff"/>
             <View style={styles.mainContainer}>
                 <View style={styles.headerContainer}>
